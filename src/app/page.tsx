@@ -4,7 +4,7 @@ import React from 'react';
 import {
   Button, Center, Container, HStack,
 } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+
 import { Octokit } from '@octokit/core';
 
 const octokit = new Octokit({
@@ -17,14 +17,6 @@ const fetchRepositories = await octokit.request('GET /search/repositories?q="coo
 });
 
 export default function Home() {
-  // const { data, error } = useQuery({
-  //   queryFn: fetchRepositories,
-  //   queryKey: ['repositories'],
-  // });
-  //
-  // console.log('data', data);
-  // console.log('error', error);
-
   console.log(fetchRepositories);
 
   return (

@@ -2,14 +2,14 @@ pre-push:
   parallel: true
   commands:
     lint:
-      run: npm run lint
+      run: yarn lint
     typecheck:
-      run: npm run typecheck
+      run:  yarn typecheck
 
 pre-commit:
   parallel: true
   commands:
     lint:
-      run: npm run lint
+      run: yarn lint
     typecheck:
-      run: npm run typecheck
+      run: yarn typecheck
