@@ -1,0 +1,20 @@
+pre-push:
+  parallel: true
+  commands:
+    lint:
+      run: yarn lint
+    typecheck:
+      run:  yarn typecheck
+
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: 'src/**/*.{ts,tsx}'
+      exclude: '.d.ts'
+      run: yarn lint-check {staged_files}
+
+    types:
+      glob: '*.{js,ts,jsx,tsx}'
+      exclude: '(^|/)(jest\.\w+)\.ts$'
+      run: yarn typecheck
