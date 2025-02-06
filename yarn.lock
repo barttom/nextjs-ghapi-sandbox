@@ -1123,24 +1123,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.66.0":
-  version: 5.66.0
-  resolution: "@tanstack/query-core@npm:5.66.0"
-  checksum: eaf5d3ad268137784002988d50308b8e2ac6da413ec1e8107a15f283f582cca30b3cff6e3e7bfd01d95e57197a0585ee42c3f57df56e0d4ff8242f07c6e98e72
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:^5.66.0":
-  version: 5.66.0
-  resolution: "@tanstack/react-query@npm:5.66.0"
-  dependencies:
-    "@tanstack/query-core": 5.66.0
-  peerDependencies:
-    react: ^18 || ^19
-  checksum: 7c0160b2c8a93ab193c2d3126d961253f626b5435ec8f275c0c77b709472a3625446314a8d0fa9e42ad46869edf17bfdc4d18738413148dd4dabcf5920ce045a
-  languageName: node
-  linkType: hard
-
 "@types/aws-lambda@npm:^8.10.83":
   version: 8.10.147
   resolution: "@types/aws-lambda@npm:8.10.147"
@@ -3851,6 +3833,117 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lefthook-darwin-arm64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-darwin-arm64@npm:1.10.10"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-darwin-x64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-darwin-x64@npm:1.10.10"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook-freebsd-arm64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-freebsd-arm64@npm:1.10.10"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-freebsd-x64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-freebsd-x64@npm:1.10.10"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook-linux-arm64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-linux-arm64@npm:1.10.10"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-linux-x64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-linux-x64@npm:1.10.10"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook-openbsd-arm64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-openbsd-arm64@npm:1.10.10"
+  conditions: os=openbsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-openbsd-x64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-openbsd-x64@npm:1.10.10"
+  conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook-windows-arm64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-windows-arm64@npm:1.10.10"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-windows-x64@npm:1.10.10":
+  version: 1.10.10
+  resolution: "lefthook-windows-x64@npm:1.10.10"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook@npm:^1.10.10":
+  version: 1.10.10
+  resolution: "lefthook@npm:1.10.10"
+  dependencies:
+    lefthook-darwin-arm64: 1.10.10
+    lefthook-darwin-x64: 1.10.10
+    lefthook-freebsd-arm64: 1.10.10
+    lefthook-freebsd-x64: 1.10.10
+    lefthook-linux-arm64: 1.10.10
+    lefthook-linux-x64: 1.10.10
+    lefthook-openbsd-arm64: 1.10.10
+    lefthook-openbsd-x64: 1.10.10
+    lefthook-windows-arm64: 1.10.10
+    lefthook-windows-x64: 1.10.10
+  dependenciesMeta:
+    lefthook-darwin-arm64:
+      optional: true
+    lefthook-darwin-x64:
+      optional: true
+    lefthook-freebsd-arm64:
+      optional: true
+    lefthook-freebsd-x64:
+      optional: true
+    lefthook-linux-arm64:
+      optional: true
+    lefthook-linux-x64:
+      optional: true
+    lefthook-openbsd-arm64:
+      optional: true
+    lefthook-openbsd-x64:
+      optional: true
+    lefthook-windows-arm64:
+      optional: true
+    lefthook-windows-x64:
+      optional: true
+  bin:
+    lefthook: bin/index.js
+  checksum: 7a5ebaefafbaed554cc43319bfde0f219ecedcc9432e2e5c25506470d96c46739520ae9442667a888996a095a4d62ad769f347fa29fa5125ae7be2a3df9ebb86
+  languageName: node
+  linkType: hard
+
 "levn@npm:^0.4.1":
   version: 0.4.1
   resolution: "levn@npm:0.4.1"
@@ -4045,7 +4138,6 @@ __metadata:
     "@chakra-ui/react": ^3.5.1
     "@emotion/react": ^11.14.0
     "@eslint/eslintrc": ^3
-    "@tanstack/react-query": ^5.66.0
     "@types/node": ^20
     "@types/react": ^19
     "@types/react-dom": ^19
@@ -4054,6 +4146,7 @@ __metadata:
     eslint-config-next: 15.1.6
     eslint-plugin-jsx-a11y: ^6.10.2
     eslint-plugin-react: ^7.37.4
+    lefthook: ^1.10.10
     next: 15.1.6
     next-themes: ^0.4.4
     octokit: ^4.1.0
