@@ -12,7 +12,7 @@ export type ItemsListProps = {
   isLoading?: boolean;
 };
 
-const loader = Array.from({ length: 10 }, () => (
+const loader = Array.from({ length: 5 }, () => (
   <Card.Root key={uuid()} size="md" variant="outline" my={4} px={8} py={4}>
     <Card.Body>
       <SkeletonText noOfLines={2} gap="4" />
