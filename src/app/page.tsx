@@ -18,6 +18,7 @@ export default function Home() {
     setTimeout(() => {
       refetch({ q: 'some', per_page: 10 });
     }, 3000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

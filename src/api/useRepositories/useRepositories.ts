@@ -37,6 +37,7 @@ export const useRepositories = (initialParams: RepositoriesParams = {
 
   useEffect(() => {
     fetchData(initialParams);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
