@@ -1,7 +1,6 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { FlatCompat } from '@eslint/eslintrc';
 
 // eslint-disable-next-line no-underscore-dangle
@@ -42,6 +41,7 @@ const eslintConfig = [
       ],
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error'],
+      'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     },
   }),
 ];

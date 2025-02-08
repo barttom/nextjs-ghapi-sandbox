@@ -1,23 +1,25 @@
-// 'use client';
+'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button, Center, Container, HStack,
 } from '@chakra-ui/react';
 
-import { Octokit } from '@octokit/core';
-
-const octokit = new Octokit({
-  auth: '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',
-});
-const fetchRepositories = await octokit.request('GET /search/repositories?q="cool"', {
-  headers: {
-    'X-GitHub-Api-Version': '2022-11-28',
-  },
-});
+import { useRepositories } from '@/api';
 
 export default function Home() {
-  console.log(fetchRepositories);
+  const {
+    data, isLoading, error, refetch,
+  } = useRepositories();
+
+  console.log(isLoading, error, data);
+
+  useEffect(() => {
+    setTimeout(() => {
+      refetch({ q: 'some', per_page: 10 });
+    }, 3000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Center>
