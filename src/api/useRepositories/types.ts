@@ -1,16 +1,13 @@
-export type Repository = {
-  id: number;
-  name: string;
-  created_at: string;
-  updated_at: string;
-  description: string;
-  url: string;
-  owner: {
-    login: string;
-    avatar_url: string;
-    url: string;
-  };
-  stargazers_count: number;
+import { components } from '@octokit/openapi-types';
+
+export type Repository = components['schemas']['repository'];
+
+export type RepositoriesParams = {
+  q: string;
+  sort?: 'updated' | 'stars' | 'forks' | 'help-wanted-issues' | undefined;
+  order?: 'desc' | 'asc' | undefined;
+  per_page?: number | undefined;
+  page?: number | undefined;
 }
 
 export type RepositoriesResponse = {

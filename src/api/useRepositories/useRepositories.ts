@@ -1,27 +1,31 @@
 import { useEffect, useState } from 'react';
 import { octokitClient } from '@/api/octokitClient';
-import { RepositoriesResponse } from './types';
+import { RepositoriesParams, RepositoriesResponse } from './types';
 
-const url = 'GET /search/repositories?q="next"';
+const url = 'GET /search/repositories';
 
-export const useRepositories = () => {
+export const useRepositories = (initialParams: RepositoriesParams = {
+  q: '',
+}) => {
   const [data, setData] = useState<RepositoriesResponse | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    setError(undefined);
-
+  const fetchData = async (params: RepositoriesParams) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
+
       const response = await octokitClient.request(url, {
         headers: {
           'X-GitHub-Api-Version': '2022-11-28',
         },
+        ...params,
       });
 
       if (response.status === 200) {
-        setData(response.data);
+        // TODO: fix types for repos data
+        setData(response.data as RepositoriesResponse);
       }
     } catch (e: unknown) {
       setData(undefined);
@@ -32,7 +36,7 @@ export const useRepositories = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(initialParams);
   }, []);
 
   return {
