@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+  Alert, Button,
   Center, Container, HStack,
 } from '@chakra-ui/react';
 import {
@@ -20,10 +21,14 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
-    data, isLoading, refetch,
+    data, isLoading, refetch, error,
   } = useRepositories({
     q: 'honey', sort: 'name' as RepositoriesParams['sort'], order: 'asc', page: currentPage, per_page: PAGE_SIZE,
   });
+
+  const handleRestart = () => {
+    setCurrentPage(1);
+  };
 
   useEffect(() => {
     refetch({
@@ -34,6 +39,20 @@ export default function Home() {
   return (
     <Center>
       <Container maxW="1200px" fluid px={16}>
+        {error && (
+          <Alert.Root status="error" px={8} py={4}>
+            <Alert.Indicator />
+            <Alert.Content>
+              <Alert.Title fontWeight="bold">Something went wrong (+_+) </Alert.Title>
+              <Alert.Description>
+                {error}
+                {' '}
+                <br />
+                <Button onClick={handleRestart} px={8} mt={8}>Restart</Button>
+              </Alert.Description>
+            </Alert.Content>
+          </Alert.Root>
+        )}
         <ItemsList items={data?.items} isLoading={isLoading} />
         <PaginationRoot
           page={currentPage}
