@@ -1,34 +1,24 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-  Button, Center, Container, HStack,
+  Center, Container,
 } from '@chakra-ui/react';
 
-import { useRepositories } from '@/api';
+import { RepositoriesParams, useRepositories } from '@/api';
+import { ItemsList } from '@/components/ItemsList';
 
 export default function Home() {
   const {
-    data, isLoading, error, refetch,
-  } = useRepositories();
-
-  console.log(isLoading, error, data);
-
-  useEffect(() => {
-    setTimeout(() => {
-      refetch({ q: 'some', per_page: 10 });
-    }, 3000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    data, isLoading,
+  } = useRepositories({ q: 'honey', sort: 'name' as RepositoriesParams['sort'], order: 'asc' });
 
   return (
-    <Center>
-      <Container maxW="lg" fluid>
-        <HStack>
-          <Button>Click me</Button>
-          <Button>Click me</Button>
-        </HStack>
+    <>
+      <Container maxW="1200px" fluid px={16}>
+        <ItemsList items={data?.items} isLoading={isLoading} />
       </Container>
-    </Center>
+      <Center />
+    </>
   );
 }
