@@ -5,6 +5,7 @@ import {
 import { HiStar } from 'react-icons/hi';
 import { RepositoriesResponse } from '@/api';
 import { SkeletonText } from '@/components/ui/skeleton';
+import { v4 as uuid } from 'uuid';
 
 export type ItemsListProps = {
   items?: RepositoriesResponse['items'];
@@ -12,7 +13,7 @@ export type ItemsListProps = {
 };
 
 const loader = Array.from({ length: 10 }, () => (
-  <Card.Root key={new Date().getTime()} size="md" variant="outline" my={4} px={8} py={4}>
+  <Card.Root key={uuid()} size="md" variant="outline" my={4} px={8} py={4}>
     <Card.Body>
       <SkeletonText noOfLines={2} gap="4" />
     </Card.Body>

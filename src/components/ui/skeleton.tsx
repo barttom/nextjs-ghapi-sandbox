@@ -4,6 +4,7 @@ import type {
 } from '@chakra-ui/react';
 import { Skeleton as ChakraSkeleton, Circle, Stack } from '@chakra-ui/react';
 import * as React from 'react';
+import { v4 as uuid } from 'uuid';
 
 export interface SkeletonCircleProps extends ChakraSkeletonProps {
   size?: CircleProps['size']
@@ -34,7 +35,7 @@ export const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
         {Array.from({ length: noOfLines }).map(() => (
           <ChakraSkeleton
             height="4"
-            key={new Date().getTime()}
+            key={uuid()}
             {...props}
             _last={{ maxW: '80%' }}
             {...rest}
