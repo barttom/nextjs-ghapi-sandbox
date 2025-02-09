@@ -2,12 +2,12 @@
 
 import React, {
   ChangeEvent, useCallback,
-  useEffect, useMemo,
+  useEffect, useMemo, useRef,
   useState,
 } from 'react';
 import {
   Alert, Box, Button,
-  Center, Container, createListCollection, HStack, Icon, Input, Separator, Text,
+  Center, Container, createListCollection, HStack, Icon, Input, Separator, Spinner, Text,
 } from '@chakra-ui/react';
 import {
   PaginationItems,
@@ -42,21 +42,26 @@ const sortList = createListCollection({
 });
 
 export default function Home() {
+  const isInitialized = useRef(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState('money');
+  const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState<RepositoriesParams['order']>('asc');
-
   const params: RepositoriesParams = useMemo(() => ({
     q: search, sort: sortBy as RepositoriesParams['sort'], order: sortOrder, page: currentPage, per_page: PAGE_SIZE,
   }), [currentPage, search, sortOrder, sortBy]);
 
   const {
     data, isLoading, refetch, error,
-  } = useRepositories(params);
+  } = useRepositories({
+    enableInitialFetch: false,
+    initialParams: params,
+  });
 
   const handleRestart = () => {
     setCurrentPage(1);
+    setSearch('');
+    setSortOrder('asc');
   };
   const handleSearch = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setSearch(target.value);
@@ -72,11 +77,17 @@ export default function Home() {
 
   const handleRefetch = useCallback(debounce((newParams: typeof params) => {
     refetch(newParams);
-  }, 1000), []);
+  }, 500), []);
 
   useEffect(() => {
-    handleRefetch(params);
+    if (isInitialized.current) {
+      handleRefetch(params);
+    }
   }, [params]);
+
+  useEffect(() => {
+    isInitialized.current = true;
+  }, []);
 
   return (
     <Box>
@@ -99,9 +110,18 @@ export default function Home() {
                   px={4}
                   onChange={handleSearch}
                   value={search}
+                  disabled={isLoading}
                 />
               </Box>
-              <SelectRoot collection={sortList} size="xs" width={{ base: '240px' }} ml={{ mdDown: 'auto' }} onChange={handleSort} defaultValue={['name.asc']}>
+              <SelectRoot
+                collection={sortList}
+                size="xs"
+                width={{ base: '240px' }}
+                ml={{ mdDown: 'auto' }}
+                onChange={handleSort}
+                defaultValue={['name.asc']}
+                disabled={isLoading}
+              >
                 <SelectTrigger>
                   <SelectValueText px={4} placeholder="Sort by:" />
                 </SelectTrigger>
@@ -121,7 +141,7 @@ export default function Home() {
       <Box height="calc(100vh - 170px)" overflow="scroll">
         <Center>
           <Container maxW="1200px" fluid px={4}>
-            {error && (
+            {!!error && !!search && !isLoading && (
               <Alert.Root status="error" px={8} py={4}>
                 <Alert.Indicator />
                 <Alert.Content>
@@ -135,27 +155,37 @@ export default function Home() {
                 </Alert.Content>
               </Alert.Root>
             )}
-            <ItemsList items={data?.items} isLoading={isLoading} />
+            {search.length === 0
+              ? (
+                <Text alignSelf="center" textAlign="center" fontSize="xx-large" py={4} marginTop={50}>
+                  👋 Type repository name to start search
+                </Text>
+              )
+              : <ItemsList items={data?.items} isLoading={isLoading} /> }
+
           </Container>
         </Center>
       </Box>
       <Separator />
       <Box height="70px" alignSelf="flex-end">
         <Center>
-          <PaginationRoot
-            page={currentPage}
-            onPageChange={({ page }) => setCurrentPage(page)}
-            count={data?.total_count ?? 1}
-            pageSize={PAGE_SIZE}
-            defaultPage={1}
-            py={4}
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
+          {isLoading ? <Spinner mt="20px" /> : (
+            <PaginationRoot
+              page={currentPage}
+              onPageChange={({ page }) => setCurrentPage(page)}
+              count={data?.total_count ?? 1}
+              pageSize={PAGE_SIZE}
+              defaultPage={1}
+              py={4}
+            >
+              <HStack>
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </HStack>
+            </PaginationRoot>
+          )}
+
         </Center>
       </Box>
     </Box>
