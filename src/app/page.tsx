@@ -1,6 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {
+  ChangeEvent, useCallback,
+  useEffect, useMemo,
+  useState,
+} from 'react';
 import {
   Alert, Box, Button,
   Center, Container, createListCollection, HStack, Icon, Input, Separator, Text,
@@ -23,6 +27,7 @@ import {
 import { RepositoriesParams, useRepositories } from '@/api';
 import { ItemsList } from '@/components/ItemsList';
 import { FaGithub } from 'react-icons/fa';
+import debounce from 'lodash.debounce';
 
 const PAGE_SIZE = 50;
 
@@ -32,20 +37,19 @@ const sortList = createListCollection({
     { label: 'Name, descending', value: 'name.desc' },
     { label: 'Stars, ascending', value: 'stars.asc' },
     { label: 'Stars, descending', value: 'stars.desc' },
-    { label: 'Created, ascending', value: 'created_at.asc' },
-    { label: 'Created, descending', value: 'created_at.desc' },
-    { label: 'Owner, ascending', value: 'owner.asc' },
-    { label: 'Owner, descending', value: 'owner.desc' },
   ],
-
+  itemToValue: (item) => item.value,
 });
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState('money');
+  const [sortBy, setSortBy] = useState('name');
+  const [sortOrder, setSortOrder] = useState<RepositoriesParams['order']>('asc');
 
-  const params: RepositoriesParams = {
-    q: 'honey', sort: 'name' as RepositoriesParams['sort'], order: 'asc', page: currentPage, per_page: PAGE_SIZE,
-  };
+  const params: RepositoriesParams = useMemo(() => ({
+    q: search, sort: sortBy as RepositoriesParams['sort'], order: sortOrder, page: currentPage, per_page: PAGE_SIZE,
+  }), [currentPage, search, sortOrder, sortBy]);
 
   const {
     data, isLoading, refetch, error,
@@ -54,10 +58,25 @@ export default function Home() {
   const handleRestart = () => {
     setCurrentPage(1);
   };
+  const handleSearch = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setSearch(target.value);
+    setCurrentPage(1);
+  };
+  const handleSort = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const [newSortBy, newSortOrder] = target.value.split('.');
+
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder as RepositoriesParams['order']);
+    setCurrentPage(1);
+  };
+
+  const handleRefetch = useCallback(debounce((newParams: typeof params) => {
+    refetch(newParams);
+  }, 1000), []);
 
   useEffect(() => {
-    refetch(params);
-  }, [currentPage]);
+    handleRefetch(params);
+  }, [params]);
 
   return (
     <Box>
@@ -74,9 +93,15 @@ export default function Home() {
                 </Text>
               </HStack>
               <Box width={{ base: '50%', mdDown: 'calc(100% - 48px)' }} margin="auto">
-                <Input placeholder="Type repo name to start search" variant="outline" px={4} />
+                <Input
+                  placeholder="Type repo name to start search"
+                  variant="outline"
+                  px={4}
+                  onChange={handleSearch}
+                  value={search}
+                />
               </Box>
-              <SelectRoot collection={sortList} size="xs" width={{ base: '240px' }} ml={{ mdDown: 'auto' }}>
+              <SelectRoot collection={sortList} size="xs" width={{ base: '240px' }} ml={{ mdDown: 'auto' }} onChange={handleSort} defaultValue={['name.asc']}>
                 <SelectTrigger>
                   <SelectValueText px={4} placeholder="Sort by:" />
                 </SelectTrigger>
