@@ -37,21 +37,19 @@ const sortList = createListCollection({
     { label: 'Name, descending', value: 'name.desc' },
     { label: 'Stars, ascending', value: 'stars.asc' },
     { label: 'Stars, descending', value: 'stars.desc' },
-    { label: 'Created, ascending', value: 'created_at.asc' },
-    { label: 'Created, descending', value: 'created_at.desc' },
-    { label: 'Owner, ascending', value: 'owner.asc' },
-    { label: 'Owner, descending', value: 'owner.desc' },
   ],
-
+  itemToValue: (item) => item.value,
 });
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState('money');
+  const [sortBy, setSortBy] = useState('name');
+  const [sortOrder, setSortOrder] = useState<RepositoriesParams['order']>('asc');
 
   const params: RepositoriesParams = useMemo(() => ({
-    q: search, sort: 'name' as RepositoriesParams['sort'], order: 'asc', page: currentPage, per_page: PAGE_SIZE,
-  }), [currentPage, search]);
+    q: search, sort: sortBy as RepositoriesParams['sort'], order: sortOrder, page: currentPage, per_page: PAGE_SIZE,
+  }), [currentPage, search, sortOrder, sortBy]);
 
   const {
     data, isLoading, refetch, error,
@@ -62,6 +60,13 @@ export default function Home() {
   };
   const handleSearch = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setSearch(target.value);
+    setCurrentPage(1);
+  };
+  const handleSort = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const [newSortBy, newSortOrder] = target.value.split('.');
+
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder as RepositoriesParams['order']);
     setCurrentPage(1);
   };
 
@@ -96,7 +101,7 @@ export default function Home() {
                   value={search}
                 />
               </Box>
-              <SelectRoot collection={sortList} size="xs" width={{ base: '240px' }} ml={{ mdDown: 'auto' }}>
+              <SelectRoot collection={sortList} size="xs" width={{ base: '240px' }} ml={{ mdDown: 'auto' }} onChange={handleSort} defaultValue={['name.asc']}>
                 <SelectTrigger>
                   <SelectValueText px={4} placeholder="Sort by:" />
                 </SelectTrigger>
