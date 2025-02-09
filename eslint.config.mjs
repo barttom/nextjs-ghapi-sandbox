@@ -23,6 +23,9 @@ const eslintConfig = [
   ),
   ...compat.plugins('jsx-a11y'),
   ...compat.config({
+    env: {
+      jest: true,
+    },
     rules: {
       'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
       'no-use-before-define': 'off',
